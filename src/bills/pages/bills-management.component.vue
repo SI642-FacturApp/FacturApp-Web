@@ -137,7 +137,6 @@ export default {
 
 <template>
   <div>
-    <h3> Manage {{ title.plural }}</h3>
     <!-- Toolbar Section -->
     <data-manager
         :title="title"
