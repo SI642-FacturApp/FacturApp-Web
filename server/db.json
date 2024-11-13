@@ -1,0 +1,30 @@
+{
+  "bills": [
+    {
+      "id": 1,
+      "name": "Bill 1",
+      "amount": 100
+    },
+    {
+      "id": 2,
+      "name": "Bill 2",
+      "amount": 200
+    }
+  ],
+  "banks": [
+    {
+      "id": 1,
+      "name": "BCP",
+      "tna": 0,
+      "tea": 1,
+      "image": "https://lirp.cdn-website.com/65a903cc/dms3rep/multi/opt/PngJoy_corazones-rojos-logo-bcp-png-download_7668962+%282%29-640w.png"
+    },
+    {
+      "id": 2,
+      "name": "Interbank",
+      "tna": 1,
+      "tea": 0,
+      "image": "https://s3.amazonaws.com/media.greatplacetowork.com/peru/best-workplaces-for-diversity-and-inclusion-in-peru/2021/interbank/logo.jpg"
+    }
+  ]
+}
