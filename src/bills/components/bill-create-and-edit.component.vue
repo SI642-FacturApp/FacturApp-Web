@@ -69,7 +69,7 @@ export default {
         <div class="field mt-5">
           <pv-float-label>
             <label for="emission_date">Fecha de Emisión</label>
-            <pv-input-text id="emission_date" v-model="bill.emission_date"
+            <pv-input-date id="emission_date" v-model="bill.emission_date"
                            :class="{'p-invalid': submitted && !bill.emission_date }"/>
           </pv-float-label>
         </div>
@@ -77,7 +77,7 @@ export default {
         <div class="field mt-5">
           <pv-float-label>
             <label for="expiration_date">Fecha de Vencimiento</label>
-            <pv-input-text id="expiration_date" v-model="bill.expiration_date"
+            <pv-input-date id="expiration_date" v-model="bill.expiration_date"
                            :class="{'p-invalid': submitted && !bill.expiration_date }"/>
           </pv-float-label>
         </div>

@@ -21,8 +21,6 @@ import {
     SelectButton, Tag, Textarea, Toast, Toolbar
 } from "primevue";
 
-
-
 const app = createApp(App)
 
 app.use(PrimeVue, {
@@ -58,7 +56,8 @@ app.component('pv-button', Button)
     .component('pv-toolbar', Toolbar)
     .component('pv-toast', Toast)
     .component('pv-date-picker', DatePicker)
-    .component('pv-list-box', Listbox);
+    .component('pv-list-box', Listbox)
+    .component('pv-input-date', DatePicker);
 
 app.use(router)
 
