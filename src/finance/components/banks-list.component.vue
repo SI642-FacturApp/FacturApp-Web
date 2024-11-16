@@ -6,7 +6,10 @@ export default {
   data() {
     return {
       banks: [],
-      financeService: new FinanceService()
+      financeService: new FinanceService(),
+      dialogVisible: false,
+      deleteDialogVisible: false,
+      selectedBank: null
     };
   },
   created() {
@@ -21,9 +24,39 @@ export default {
       } catch (error) {
         console.error('Error fetching banks:', error);
       }
+    },
+    openEditDialog(bank) {
+      this.selectedBank = { ...bank };
+      this.dialogVisible = true;
+    },
+    async saveChanges() {
+      try {
+        await this.financeService.update(this.selectedBank.id, this.selectedBank);
+        this.dialogVisible = false;
+        await this.fetchBanks(); // Refresh the list
+      } catch (error) {
+        console.error('Error saving changes:', error);
+      }
+    },
+    openDeleteDialog(bank) {
+      this.selectedBank = bank;
+      this.deleteDialogVisible = true;
+    },
+    async confirmDelete() {
+      try {
+        await this.financeService.delete(this.selectedBank.id);
+        this.deleteDialogVisible = false;
+        await this.fetchBanks(); // Refresh the list
+      } catch (error) {
+        console.error('Error deleting bank:', error);
+      }
+    },
+    cancelDelete() {
+      this.deleteDialogVisible = false;
     }
   }
 }
+
 </script>
 
 <template>
@@ -38,11 +71,31 @@ export default {
             <h2>{{ bank.name }}</h2>
             <p v-if="bank.tna !== 0">TNA: {{ bank.tna }} %</p>
             <p v-if="bank.tea !== 0">TEA: {{ bank.tea }} %</p>
+            <pv-button label="Edit" @click="openEditDialog(bank)" />
+            <pv-button label="Delete" @click="openDeleteDialog(bank)" />
           </div>
         </template>
       </pv-card>
     </div>
   </div>
+
+  <pv-dialog header="Edit Bank Details" v-model:visible="dialogVisible">
+    <pv-float-label>
+      <label for="tna">Bank TNA</label>
+      <pv-input-number id="tna" v-model="selectedBank.tna" />
+    </pv-float-label>
+    <pv-float-label>
+      <label for="tea">Bank TEA</label>
+      <pv-input-number id="tea" v-model="selectedBank.tea" />
+    </pv-float-label>
+    <pv-button label="Save" @click="saveChanges" />
+  </pv-dialog>
+
+  <pv-dialog header="Delete Bank" v-model:visible="deleteDialogVisible">
+    <p>Do you really want to delete this bank?</p>
+    <pv-button label="Confirm" @click="confirmDelete" />
+    <pv-button label="Cancel" @click="cancelDelete" />
+  </pv-dialog>
 </template>
 
 <style scoped>
