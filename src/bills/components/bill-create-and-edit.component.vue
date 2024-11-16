@@ -19,6 +19,7 @@ export default {
     },
     onSaveRequested() {
       this.submitted = true;
+      this.$emit('save-requested', this.item);
     }
   }
 }
