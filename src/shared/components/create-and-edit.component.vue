@@ -1,4 +1,6 @@
 <script>
+const defaultStyle = { width: '400px'};
+
 export default {
   name: "create-and-edit",
   props: {entity: null, visible: Boolean, entityName: 'Agregar', edit: Boolean, size: 'default'},
