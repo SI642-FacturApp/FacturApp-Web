@@ -1,16 +1,16 @@
 <script>
-import {Bill} from "../model/bill.entity.js";
-import {BillsService} from "../services/bills.service.js";
+import { Bill } from "../model/bill.entity.js";
+import { BillsService } from "../services/bills.service.js";
 import DataManager from "../../shared/components/data-manager.component.vue";
 import BillCreateAndEdit from "../components/bill-create-and-edit.component.vue";
 
 export default {
   name: "bills-management",
-  components: {BillCreateAndEdit, DataManager},
+  components: { BillCreateAndEdit, DataManager },
 
   data() {
     return {
-      title: {singular: "Bill", plural: "Bills"},
+      title: { singular: "Bill", plural: "Bills" },
       bills: [],
       bill: new Bill({}),
       selectedBills: [],
@@ -18,19 +18,31 @@ export default {
       createAndEditDialogIsVisible: false,
       isEdit: false,
       submitted: false
-    }
+    };
   },
   methods: {
     notifySuccessfulAction(message) {
-      this.$toast.add({severity: 'success', summary: 'Success', detail: message, life: 700});
+      if (this.$toast) {
+        this.$toast.add({ severity: 'success', summary: 'Success', detail: message, life: 700 });
+      } else {
+        console.log('Toast message:', message);
+      }
     },
     findIndexById(id) {
       return this.bills.findIndex(bill => bill.id === id);
+    },
+    generateNewId() {
+      if (!this.bills || this.bills.length === 0) {
+        return '1';
+      }
+      const maxId = Math.max(...this.bills.map(bill => parseInt(bill.id, 10) || 0));
+      return (maxId + 1).toString();
     },
     // Event Handlers
     onNewBill() {
       this.bill = new Bill({});
       this.isEdit = false;
+      this.submitted = false;
       this.createAndEditDialogIsVisible = true;
       console.log(this.createAndEditDialogIsVisible);
     },
@@ -56,7 +68,7 @@ export default {
     onSaveRequested(bill) {
       console.log('onSaveRequested');
       this.submitted = true;
-      if (this.bill.name.trim()) {
+      if (bill && bill.name.trim()) {
         if (bill.id) {
           this.updateBill();
         } else {
@@ -64,11 +76,15 @@ export default {
         }
         this.createAndEditDialogIsVisible = false;
         this.isEdit = false;
+      } else {
+        console.error('Bill object is undefined or missing required properties');
       }
     },
 
     // Service client methods
     createBill() {
+      const newId = this.generateNewId();
+      this.bill.id = newId;
       this.billService.create(this.bill).then(response => {
         let bill = new Bill(response.data);
         this.bills.push(bill);
@@ -80,7 +96,7 @@ export default {
           detail: `Error creating bill: ${error.message}`,
           life: 3000
         });
-      })
+      });
     },
     updateBill() {
       this.billService.update(this.bill.id, this.bill).then(response => {
@@ -97,7 +113,7 @@ export default {
       });
     },
     deleteBill() {
-      this.billService.delete(this.bill.id).then(() =>{
+      this.billService.delete(this.bill.id).then(() => {
         let index = this.findIndexById(this.bill.id);
         this.bills.splice(index, 1);
         this.notifySuccessfulAction('Bill deleted successfully');
@@ -108,31 +124,32 @@ export default {
           detail: `Error deleting bill: ${error.message}`,
           life: 3000
         });
-      })
+      });
     },
     deleteSelectedBills() {
       this.selectedBills.forEach((bill) => {
         this.billService.delete(bill.id).then(() => {
-          this.bills = this.bills.filter(b => b.id !== bill.id);
+          this.bills = this.bills.filter((b) => b.id !== bill.id);
         });
       });
       this.notifySuccessfulAction('Bills deleted successfully');
-    },
-    created() {
-      this.billService = new BillsService();
-      this.billService.getAll().then(response => {
-        this.bills = response.data.map(bill => new Bill(bill));
-      }).catch(error => {
-        this.$toast.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: `Error fetching bills: ${error.message}`,
-          life: 3000
-        });
-      });
     }
+  },
+  created() {
+    this.billService = new BillsService();
+    this.billService.getAll().then(response => {
+      this.bills = response.data.map(bill => new Bill(bill));
+      console.log(this.bills);
+    }).catch(error => {
+      this.$toast.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: `Error fetching bills: ${error.message}`,
+        life: 3000
+      });
+    });
   }
-}
+};
 </script>
 
 <template>
