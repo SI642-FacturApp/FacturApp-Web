@@ -17,11 +17,15 @@ export class BillsService {
         return http.get(`${this.resourceEndpoint}/${status}`);
     }
 
+    getByNum(num) {
+        return http.get(`${this.resourceEndpoint}/${num}`);
+    }
+
     create(bill) {
         return http.post(this.resourceEndpoint, bill);
     }
 
-    async updateStatus(billId, status, value) {
+    async updateStatus(billId, status, value, tcea) {
         try {
             // Retrieve the bill by its ID
             const response = await http.get(`${this.resourceEndpoint}/${billId}`);
@@ -30,6 +34,7 @@ export class BillsService {
             // Update the bill's status
             bill.status = status;
             bill.amount = value;
+            bill.tcea = tcea;
 
             // Send the updated bill back to the server
             const updateResponse = await http.patch(`${this.resourceEndpoint}/${billId}`, bill);
