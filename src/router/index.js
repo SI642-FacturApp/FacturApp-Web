@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory} from "vue-router";
-import RecoveryComponent from "../IAM/pages/recovery.component.vue";
 import BillsManagementComponent from "../bills/pages/bills-management.component.vue";
 import FinanceManagementComponent from "../finance/pages/finance-management.component.vue";
 import SignUpComponent from "../iam/pages/sign-up.component.vue";
