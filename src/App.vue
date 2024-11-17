@@ -14,6 +14,9 @@ export default {
   computed: {
     isSignedIn() {
       return this.accountStore.isSignedIn;
+    },
+    currentUsername() {
+      return this.accountStore.currentUsername;
     }
   },
   methods: {
@@ -25,10 +28,13 @@ export default {
 </script>
 
 <template>
-  <main>
-    <div v-if="isSignedIn">
-      <pv-button text @click="onSignOut">Sign Out</pv-button>
+  <header>
+    <div v-if="isSignedIn" class="fixed top-0">
+      <span class="fixed font-bold p-3 left-0">Bienvenido, {{ currentUsername }}</span>
+      <pv-button text @click="onSignOut" class="m-3 text-white fixed right-0 bg-black-alpha-90 hover:bg-black-alpha-50 border-round-xl border-none">Sign Out</pv-button>
     </div>
+  </header>
+  <main>
     <router-view/>
   </main>
 </template>
