@@ -19,7 +19,7 @@ export const useAccountStore = defineStore({
                         this.signedIn = true;
                         this.userId = signInResponse.id;
                         this.username = signInResponse.username;
-                        router.push({ name: 'recovery' });
+                        router.push({ name: 'bills' });
                     } else {
                         router.push({ name: 'sign-in' });
                     }
