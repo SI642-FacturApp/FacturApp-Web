@@ -8,15 +8,15 @@ export default {
     return {
       email: null,
       password: null,
-      userService: null
+      userService: null,
+      accountStore: useAccountStore()
     }
   },
   methods: {
     accountSignIn() {
-      let accountStore = useAccountStore();
       if (this.email && this.password) {
         let signInRequest = new SignInRequest(this.email, this.password);
-        accountStore.signIn(signInRequest, this.$router)
+        this.accountStore.signIn(signInRequest, this.$router)
       }
       else {
         console.log("Email and password are required.")

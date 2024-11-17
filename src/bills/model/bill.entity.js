@@ -1,6 +1,7 @@
 export class Bill {
-    constructor({id = '', name = '', ruc = '', type = '', num = '', emission_date = '', expiration_date = '', status = '', amount = 0, tcea = 0, currency = ''} = {}) {
+    constructor({id = '', userId = '', name = '', ruc = '', type = '', num = '', emission_date = '', expiration_date = '', status = '', amount = 0, tcea = 0, currency = ''} = {}) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.ruc = ruc;
         this.type = type;

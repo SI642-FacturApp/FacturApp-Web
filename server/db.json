@@ -1,14 +1,18 @@
 {
   "bills": [
     {
-      "id": 1,
-      "name": "Bill 1",
-      "amount": 100
-    },
-    {
-      "id": 2,
-      "name": "Bill 2",
-      "amount": 200
+      "id": "4",
+      "userId": 3,
+      "name": "Test",
+      "ruc": 1234567890123,
+      "type": "Created",
+      "num": "12456",
+      "emission_date": "2024-11-17T05:00:00.000Z",
+      "expiration_date": "2024-11-30T05:00:00.000Z",
+      "status": "Validado",
+      "amount": "100000",
+      "tcea": 0,
+      "currency": "PEN"
     }
   ],
   "banks": [
