@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from "pinia"
 import './style.css'
 import App from './App.vue'
 import PrimeVue from 'primevue/config'
@@ -65,5 +66,8 @@ app.component('pv-button', Button)
     .component('pv-confirm-dialog', ConfirmDialog);
 
 app.use(router)
+
+const pinia = createPinia()
+app.use(pinia)
 
 app.mount('#app')

@@ -1,12 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000';
-
 const http = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: "http://localhost:3000/api/v1"
 });
 
 http.defaults.headers.common['Content-Type'] = 'application/json';
 http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+http.defaults.headers.common['Cache-Control'] = 'no-cache';
 
 export default http;
