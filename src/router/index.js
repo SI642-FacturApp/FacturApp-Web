@@ -1,15 +1,15 @@
 import {createRouter, createWebHistory} from "vue-router";
-import SignUpComponent from "../IAM/pages/sign-up.component.vue";
-import LoginComponent from "../IAM/pages/login.component.vue";
-import RecoveryComponent from "../IAM/pages/recovery.component.vue";
+import SignUpComponent from "../iam/pages/sign-up.component.vue";
+import SignInComponent from "../iam/pages/sign-in.component.vue";
+import RecoveryComponent from "../iam/pages/recovery.component.vue";
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/signup', name: 'signup', component: SignUpComponent, meta: { title: 'Sign Up' } },
-        { path: '/login', name: 'login', component: LoginComponent, meta: { title: 'Login' } },
+        { path: '/sign-up', name: 'sign-up', component: SignUpComponent, meta: { title: 'Sign Up' } },
+        { path: '/sign-in', name: 'sign-in', component: SignInComponent, meta: { title: 'Sign In' } },
         { path: '/recovery', name: 'recovery', component: RecoveryComponent, meta: { title: 'Recover your password' } },
-        { path: '/', redirect: '/login' }
+        { path: '/', redirect: '/sign-in' }
     ]
 })
 
