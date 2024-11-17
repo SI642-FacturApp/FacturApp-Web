@@ -21,6 +21,24 @@ export class BillsService {
         return http.post(this.resourceEndpoint, bill);
     }
 
+    async updateStatus(billId, status, value) {
+        try {
+            // Retrieve the bill by its ID
+            const response = await http.get(`${this.resourceEndpoint}/${billId}`);
+            const bill = response.data;
+
+            // Update the bill's status
+            bill.status = status;
+            bill.amount = value;
+
+            // Send the updated bill back to the server
+            const updateResponse = await http.patch(`${this.resourceEndpoint}/${billId}`, bill);
+            return updateResponse.data;
+        } catch (error) {
+            throw new Error(`Error updating bill status: ${error.message}`);
+        }
+    }
+
     update(id, bill) {
         console.log(`Updating bill with ID: ${id}`); // Log the ID
         return http.put(`${this.resourceEndpoint}/${id}`, bill);
@@ -36,4 +54,6 @@ export class BillsService {
     findByName(name) {
         return http.get(`${this.resourceEndpoint}?name=${name}`);
     }
+
+
 }
