@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "username": "Sebastian",
+      "phone": "954579940",
+      "email": "sebaspacheco2003@gmail.com",
+      "password": "12345678",
+      "id": 2
+    },
+    {
+      "username": "Pache",
+      "phone": "914091759",
+      "email": "pachieeee@proton.me",
+      "password": "Upc123456$",
+      "id": 3
+    }
+  ]
+}
