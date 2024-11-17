@@ -121,7 +121,7 @@ export default {
     },
     async giveBill(bank) {
       try {
-        const updatedBill = await this.billService.updateStatus(this.selectedBill, bank.name, this.value);
+        const updatedBill = await this.billService.updateStatus(this.selectedBill, bank.name, this.value, this.tcea);
         this.selectedBill.status = updatedBill.status;
         console.log('Bill status updated successfully');
         this.billsDialog = false;
