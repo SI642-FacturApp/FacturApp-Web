@@ -3,10 +3,11 @@ import { Bill } from "../model/bill.entity.js";
 import { BillsService } from "../services/bills.service.js";
 import DataManager from "../../shared/components/data-manager.component.vue";
 import BillCreateAndEdit from "../components/bill-create-and-edit.component.vue";
+import { SelectButton as PvSelectButton } from "primevue";
 
 export default {
   name: "bills-management",
-  components: { BillCreateAndEdit, DataManager },
+  components: { PvSelectButton, BillCreateAndEdit, DataManager },
 
   data() {
     return {
@@ -17,8 +18,14 @@ export default {
       billService: null,
       createAndEditDialogIsVisible: false,
       isEdit: false,
-      submitted: false
+      submitted: false,
+      selectedCurrency: 'PEN' // Default selected currency
     };
+  },
+  computed: {
+    filteredBills() {
+      return this.bills.filter(bill => bill.currency === this.selectedCurrency);
+    }
   },
   methods: {
     notifySuccessfulAction(message) {
@@ -80,7 +87,6 @@ export default {
         console.error('Bill object is undefined or missing required properties');
       }
     },
-
     // Service client methods
     createBill() {
       const newId = this.generateNewId();
@@ -134,6 +140,10 @@ export default {
         });
       });
       this.notifySuccessfulAction('Bills deleted successfully');
+    },
+    onOptionChange() {
+      // This method is triggered when the selected currency changes
+      console.log('Selected currency:', this.selectedCurrency);
     }
   },
   created() {
@@ -154,28 +164,29 @@ export default {
 </script>
 
 <template>
-
-
   <div>
+    <pv-select-button :options="[{label: 'PEN', value: 'PEN'}, {label: 'USD', value: 'USD'}]"
+                      v-model="selectedCurrency" option-label="label" option-value="value" @change="onOptionChange"/>
     <!-- Toolbar Section -->
     <data-manager
         :title="title"
-        :items="bills"
+        :items="filteredBills"
         @new-item-requested="onNewBill"
         @edit-item-requested="onEditBill"
         @delete-item-requested="onDeleteBill"
         @delete-selected-items-requested="onDeleteSelectedBills">
-        <template #custom-columns>
-        <pv-column :sortable="true" field="id" header="Id" style="min-width: 10rem" class="bg-gray-100" />
-        <pv-column :sortable="true" field="name" header="Nombre" style="min-width: 10rem" />
-        <pv-column :sortable="true" field="ruc" header="RUC" style="min-width: 10rem" />
-        <pv-column :sortable="true" field="type" header="Tipo" style="min-width: 10rem" />
-        <pv-column :sortable="true" field="num" header="N° Comprobante" style="min-width: 10rem" />
-        <pv-column :sortable="true" field="emission_date" header="Fecha de Emisión" style="min-width: 10rem" />
-        <pv-column :sortable="true" field="expiration_date" header="Fecha de Vencimiento" style="min-width: 10rem" />
-        <pv-column :sortable="true" field="status" header="Estado" style="min-width: 10rem" />
-        <pv-column :sortable="true" field="amount" header="Monto" style="min-width: 10rem" />
-        </template>
+      <template #custom-columns>
+        <pv-column :sortable="true" field="id" header="Id" style="min-width: 10rem" class="bg-gray-100"/>
+        <pv-column :sortable="true" field="name" header="Nombre" style="min-width: 10rem"/>
+        <pv-column :sortable="true" field="ruc" header="RUC" style="min-width: 10rem"/>
+        <pv-column :sortable="true" field="type" header="Tipo" style="min-width: 10rem"/>
+        <pv-column :sortable="true" field="num" header="N° Comprobante" style="min-width: 10rem"/>
+        <pv-column :sortable="true" field="emission_date" header="Fecha de Emisión" style="min-width: 10rem"/>
+        <pv-column :sortable="true" field="expiration_date" header="Fecha de Vencimiento" style="min-width: 10rem"/>
+        <pv-column :sortable="true" field="status" header="Estado" style="min-width: 10rem"/>
+        <pv-column :sortable="true" field="amount" header="Monto" style="min-width: 10rem"/>
+        <pv-column :sortable="true" field="tcea" header="TCEA" style="min-width: 10rem"/>
+      </template>
     </data-manager>
     <!-- Create and Edit Dialog -->
     <bill-create-and-edit
@@ -186,9 +197,8 @@ export default {
         @save-requested="onSaveRequested">
     </bill-create-and-edit>
   </div>
-
 </template>
 
 <style scoped>
-
+/* Add any necessary styles here */
 </style>
