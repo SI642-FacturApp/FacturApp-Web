@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from "pinia"
 import './style.css'
 import App from './App.vue'
 import PrimeVue from 'primevue/config'
@@ -20,8 +21,6 @@ import {
     Select,
     SelectButton, Tag, Textarea, Toast, Toolbar
 } from "primevue";
-
-
 
 const app = createApp(App)
 
@@ -61,5 +60,8 @@ app.component('pv-button', Button)
     .component('pv-list-box', Listbox);
 
 app.use(router)
+
+const pinia = createPinia()
+app.use(pinia)
 
 app.mount('#app')
