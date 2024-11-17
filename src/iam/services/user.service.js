@@ -8,6 +8,7 @@ export class UserService {
     }
 
     getByEmail(email) {
-        return http.get(`${this.resourceEndpoint}?email=${email}`);
+        const encodedEmail = encodeURIComponent(email);
+        return http.get(`${this.resourceEndpoint}?email=${encodedEmail}`);
     }
 }
