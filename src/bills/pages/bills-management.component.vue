@@ -4,6 +4,7 @@ import { BillsService } from "../services/bills.service.js";
 import DataManager from "../../shared/components/data-manager.component.vue";
 import BillCreateAndEdit from "../components/bill-create-and-edit.component.vue";
 import { SelectButton as PvSelectButton } from "primevue";
+import { useAccountStore } from "../../stores/account.store.js";
 
 export default {
   name: "bills-management",
@@ -13,6 +14,7 @@ export default {
     return {
       title: { singular: "Bill", plural: "Bills" },
       bills: [],
+      accountStore: useAccountStore(),
       bill: new Bill({}),
       selectedBills: [],
       billService: null,
@@ -92,8 +94,9 @@ export default {
       const newId = this.generateNewId();
       this.bill.id = newId;
       this.bill.status = 'Validado';
+      this.bill.userId = accountStore.userId;
       this.billService.create(this.bill).then(response => {
-        let bill = new Bill(response.data);
+        let bill = new Bill( {...response.data, userId: accountStore.userId} );
         this.bills.push(bill);
         this.notifySuccessfulAction('Bill created successfully');
       }).catch(error => {
@@ -149,7 +152,9 @@ export default {
   created() {
     this.billService = new BillsService();
     this.billService.getAll().then(response => {
-      this.bills = response.data.map(bill => new Bill(bill));
+      this.bills = response.data
+          .filter(bill => bill.userId === this.accountStore.userId)
+          .map(bill => new Bill(bill));
       console.log(this.bills);
     }).catch(error => {
       this.$toast.add({
