@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { UserService } from "../iam/services/user.service.js";
-import {User} from "../iam/model/user.entity.js";
+import {SignInResponse} from "../iam/model/sign-in.response.js";
 
 const userService = new UserService();
 
@@ -8,25 +8,30 @@ export const useAccountStore = defineStore({
     id: 'user',
     state: () => ({ signedIn: false, userId: 0, username: ''}),
     actions: {
-        async signIn(userResponse, router) {
+        async signIn(signInRequest, router) {
+            console.log("SignInRequest:", signInRequest)
+            userService.getByEmail(signInRequest.email)
+                .then(response => {
+                    const user = response.data.length > 0 ? response.data[0] : null;
+                    if (user && user.password === signInRequest.password) {
+                        let signInResponse = new SignInResponse(user.id, user.username, user.phone, user.email, user.password);
 
-            userService.getByEmail(userResponse.email).then(response => {
-                let user = new User(response.data);
-                if (userResponse.password !== user.password) {
+                        this.signedIn = true;
+                        this.userId = signInResponse.id;
+                        this.username = signInResponse.username;
+                        router.push({ name: 'recovery' });
+                    } else {
+                        router.push({ name: 'sign-in' });
+                    }
+
+                })
+                .catch(e => {
+                    console.error("Error during sign-in:", e);
                     router.push({ name: 'sign-in' });
-                }
-                this.signedIn = true;
-                this.userId = user.id;
-                this.username = user.username;
-                router.push({ name: 'recovery' });
-            })
-            .catch(e => {
-                console.log(e)
-                router.push({ name: 'sign-in' });
-            })
+                })
         },
-        async signUp(user, router){
-            userService.create(user)
+        async signUp(userResponse, router){
+            userService.create(userResponse)
                 .then(response => {
                     router.push({ name: 'sign-in' });
                 })
