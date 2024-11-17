@@ -1,6 +1,7 @@
 <script>
 import {Bank} from "../model/bank.entity.js";
 import {FinanceService} from "../services/finance.service.js";
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   name: "banks",
@@ -19,11 +20,7 @@ export default {
       this.bank = new Bank({});
     },
     generateNewId() {
-      if (!this.banks || this.banks.length === 0) {
-        return '1';
-      }
-      const maxId = Math.max(...this.banks.map(bank => parseInt(bank.id, 10) || 0));
-      return (maxId + 1).toString();
+      return uuidv4();
     },
     addBank() {
       const newId = this.generateNewId();
