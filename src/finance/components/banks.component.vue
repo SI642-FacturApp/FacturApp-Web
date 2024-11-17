@@ -1,18 +1,32 @@
 <script>
 import {Bank} from "../model/bank.entity.js";
 import {FinanceService} from "../services/finance.service.js";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+import {Select as PvSelect, SelectButton as PvSelectButton} from "primevue";
 
 export default {
   name: "banks",
-  components: {},
+  components: {PvSelect, PvSelectButton},
 
   data() {
     return {
       banks: [],
       bank: new Bank({}),
       dialogVisible: false,
-      financeService: new FinanceService()
+      financeService: new FinanceService(),
+
+      selectedType: null,
+      teValue: null,
+      tnValue: null,
+      periodOptions: [
+        { label: 'Anual', value: '360' },
+        { label: 'Semestral', value: '180' },
+        { label: 'Cuatrimestral', value: '120' },
+        { label: 'Trimestral', value: '90' },
+        { label: 'Bimestral', value: '60' },
+        { label: 'Mensual', value: '30' },
+        { label: 'Quincenal', value: '15' }
+      ]
     };
   },
   methods: {
@@ -55,20 +69,86 @@ export default {
 <template>
   <pv-button label="Add Bank" @click="dialogVisible = true"/>
   <pv-dialog header="Bank Details" v-model:visible="dialogVisible">
-    <pv-float-label>
-      <label for="name">Bank Name</label>
-      <pv-input-text id="name" v-model="bank.name"/>
-    </pv-float-label>
-    <pv-float-label>
-      <label for="tea">Bank TEA</label>
-      <pv-input-number id="tea" v-model="bank.tea"/>
-    </pv-float-label>
-    <pv-float-label>
-      <label for="image">Bank image</label>
-      <pv-input-text id="image" v-model="bank.image"/>
-    </pv-float-label>
+    <div class="field mt-5">
+      <pv-float-label>
+        <label for="name">Nombre del banco</label>
+        <pv-input-text id="name" v-model="bank.name"/>
+      </pv-float-label>
+    </div>
+    <div class="field mt-5">
+      <pv-select-button
+          v-model="selectedType"
+          :options="[{ label: 'Tasa Efectiva', value: 'te' }, { label: 'Tasa Nominal', value: 'tn' }]"
+          option-label="label" option-value="value"
+      />
+    </div>
 
-    <pv-button label="Save" @click="addBank"/>
+    <div v-if="selectedType === 'tn'" class="field mt-5">
+      <div class="field mt-5">
+        <pv-float-label>
+          <label for="tn">TN del banco</label>
+          <pv-input-number id="tn" v-model="bank.tn"/>
+        </pv-float-label>
+      </div>
+
+      <div class="field mt-5">
+        <pv-select
+            v-model="bank.m"
+            :options="periodOptions"
+            option-label="label"
+            option-value="value"
+            placeholder="Seleccionar periodo"
+        />
+      </div>
+
+      <div class="field mt-5">
+        <pv-select
+            v-model="bank.n"
+            :options="periodOptions"
+            option-label="label"
+            option-value="value"
+            placeholder="Seleccionar capitalizacion"
+        />
+      </div>
+    </div>
+
+
+    <div v-if="selectedType === 'te'" class="field mt-5">
+
+      <div class="field mt-5">
+        <pv-float-label>
+          <label for="te">TE del banco</label>
+          <pv-input-number id="te" v-model="bank.te"/>
+        </pv-float-label>
+      </div>
+
+        <div class="field mt-5">
+          <pv-select
+              v-model="bank.m"
+              :options="periodOptions"
+              option-label="label"
+              option-value="value"
+              placeholder="Seleccionar periodo"
+          />
+
+        </div>
+      </div>
+
+    <div class="field mt-5">
+      <pv-float-label>
+        <label for="costs">Otros costos</label>
+        <pv-input-number id="costs" v-model="bank.costs"/>
+      </pv-float-label>
+    </div>
+
+      <div class="field mt-5">
+        <pv-float-label>
+          <label for="image">Imagen del banco</label>
+          <pv-input-text id="image" v-model="bank.image"/>
+        </pv-float-label>
+      </div>
+
+      <pv-button label="Save" @click="addBank"/>
   </pv-dialog>
 </template>
 
