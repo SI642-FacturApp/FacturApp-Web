@@ -1,5 +1,5 @@
 export class Bill {
-    constructor({id = '', name = '', ruc = '', type = '', num = '', emission_date = '', expiration_date = '', status = '', amount = 0}) {
+    constructor({id = '', name = '', ruc = '', type = '', num = '', emission_date = '', expiration_date = '', status = '', amount = 0, tcea = 0, currency = ''} = {}) {
         this.id = id;
         this.name = name;
         this.ruc = ruc;
@@ -9,6 +9,8 @@ export class Bill {
         this.expiration_date = expiration_date;
         this.status = status;
         this.amount = amount;
+        this.tcea = tcea;
+        this.currency = currency;
     }
 
 }
