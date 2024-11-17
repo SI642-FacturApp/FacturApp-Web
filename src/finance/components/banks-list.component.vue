@@ -26,6 +26,9 @@ export default {
       te: 0,
       discount: 0,
       value: 0,
+      tempValue: 0,
+      bCosts: 0,
+      tea: 0,
       tcea: 0
     };
   },
@@ -97,14 +100,35 @@ export default {
             this.differenceDays = Math.ceil(this.differenceMs / (1000 * 60 * 60 * 24));
 
             console.log(`ID: ${bank.id}`);
-            console.log(`TEA: ${bank.tea}`);
-            this.te = (1 + (bank.tea / 100)) ** (this.differenceDays / 360) - 1;
+            console.log(`TEA: ${bank.te}`);
+
+            if(bank.te !== 0 && bank.m !== 360) {
+              this.tea = (1 + (bank.te / 100)) ** (360 / bank.m);
+            } else {
+              this.tea = bank.te
+            }
+
+
+            if(bank.tn !== 0){
+              this.tea = (1 + ((bank.tn / 100 )/ bank.m)) ** (bank.n);
+            }
+
+            this.te = (1 + (this.tea / 100)) ** (this.differenceDays / 360) - 1;
             console.log(`TE: ${this.te * 100}`);
 
             this.discount = (this.te / (this.te + 1));
             console.log(`Discount: ${this.discount * 100}`);
 
-            this.value = (selectedBillObj.amount * (1 - this.discount));
+            this.tempValue = (selectedBillObj.amount * (1 - this.discount));
+            console.log(`Temp Value: ${this.tempValue}`);
+
+            if(selectedBillObj.currency === 'USD') {
+              this.bCosts = bank.costs / 3.8;
+              this.value = (this.tempValue - this.bCosts);
+            } else {
+              this.value = (this.tempValue - bank.costs);
+            }
+
             console.log(`Value: ${this.value}`);
 
             this.tcea = (selectedBillObj.amount / this.value) ** (360 / this.differenceDays) - 1;
@@ -168,8 +192,10 @@ export default {
         <template #content>
           <div class="bank-details">
             <h2>{{ bank.name }}</h2>
-            <p v-if="bank.tna !== 0">TNA: {{ bank.tna }} %</p>
-            <p v-if="bank.tea !== 0">TEA: {{ bank.tea }} %</p>
+            <p v-if="bank.tn !== 0">TN: {{ bank.tn }} %</p>
+            <p v-if="bank.te !== 0">TE: {{ bank.te }} %</p>
+            <p>Periodo: {{bank.m}} dias</p>
+            <p v-if="bank.tn !== 0">Capitalizacion: {{bank.n}} dias</p>
             <pv-button label="Dar factura" @click="giveBillRequest(bank)"/>
 
             <pv-button label="Editar" severity="secondary" @click="openEditDialog(bank)"/>
@@ -199,11 +225,11 @@ export default {
   <pv-dialog header="Edit Bank Details" v-model:visible="dialogVisible">
     <pv-float-label>
       <label for="tna">Bank TNA</label>
-      <pv-input-number id="tna" v-model="selectedBank.tna" />
+      <pv-input-number id="tna" v-model="selectedBank.tn" />
     </pv-float-label>
     <pv-float-label>
       <label for="tea">Bank TEA</label>
-      <pv-input-number id="tea" v-model="selectedBank.tea" />
+      <pv-input-number id="tea" v-model="selectedBank.te" />
     </pv-float-label>
     <pv-button label="Save" @click="saveChanges" />
   </pv-dialog>
