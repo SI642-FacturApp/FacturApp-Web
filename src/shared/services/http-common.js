@@ -6,5 +6,6 @@ const http = axios.create({
 
 http.defaults.headers.common['Content-Type'] = 'application/json';
 http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+http.defaults.headers.common['Cache-Control'] = 'no-cache';
 
 export default http;
