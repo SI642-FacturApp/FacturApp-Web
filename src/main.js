@@ -8,18 +8,19 @@ import Aura from '@primevue/themes/aura'
 import 'primeflex/primeflex.css'
 import 'primeicons/primeicons.css'
 
+
 import {
     Button,
     Card,
     Checkbox,
-    Column,
+    Column, ConfirmationService, ConfirmDialog,
     DataTable, DatePicker,
-    Dialog, Drawer,
+    Dialog, DialogService, Drawer,
     FileUpload, FloatLabel, IconField, InputIcon, InputNumber,
     InputText, Listbox, Menu,
     Password, Rating, Row,
     Select,
-    SelectButton, Tag, Textarea, Toast, Toolbar
+    SelectButton, Tag, Textarea, Toast, ToastService, Toolbar
 } from "primevue";
 
 const app = createApp(App)
@@ -32,6 +33,9 @@ app.use(PrimeVue, {
         }
     }
 })
+app.use(ConfirmationService);
+app.use(DialogService)
+app.use(ToastService);
 
 app.component('pv-button', Button)
     .component('pv-card', Card)
@@ -57,7 +61,9 @@ app.component('pv-button', Button)
     .component('pv-toolbar', Toolbar)
     .component('pv-toast', Toast)
     .component('pv-date-picker', DatePicker)
-    .component('pv-list-box', Listbox);
+    .component('pv-list-box', Listbox)
+    .component('pv-input-date', DatePicker)
+    .component('pv-confirm-dialog', ConfirmDialog);
 
 app.use(router)
 
