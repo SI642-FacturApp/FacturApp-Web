@@ -85,6 +85,7 @@ export default {
     createBill() {
       const newId = this.generateNewId();
       this.bill.id = newId;
+      this.bill.status = 'Validado';
       this.billService.create(this.bill).then(response => {
         let bill = new Bill(response.data);
         this.bills.push(bill);
@@ -153,6 +154,8 @@ export default {
 </script>
 
 <template>
+
+
   <div>
     <!-- Toolbar Section -->
     <data-manager
