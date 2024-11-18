@@ -73,6 +73,7 @@ export default {
                 :min="10000000000"
                 :max="99999999999"
                 @input="validateRuc"
+                :useGrouping="false"
                 :class="{'p-invalid': submitted && !bill.ruc }"
             />
           </pv-float-label>
