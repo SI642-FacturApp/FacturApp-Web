@@ -22,6 +22,7 @@ import {
     Select,
     SelectButton, Tag, Textarea, Toast, ToastService, Toolbar
 } from "primevue";
+import Chart from "primevue/chart";
 
 const app = createApp(App)
 
@@ -63,7 +64,8 @@ app.component('pv-button', Button)
     .component('pv-date-picker', DatePicker)
     .component('pv-list-box', Listbox)
     .component('pv-input-date', DatePicker)
-    .component('pv-confirm-dialog', ConfirmDialog);
+    .component('pv-confirm-dialog', ConfirmDialog)
+    .component('pv-chart', Chart);
 
 app.use(router)
 
