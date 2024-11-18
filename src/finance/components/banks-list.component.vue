@@ -22,6 +22,16 @@ export default {
       bankDate: null,
       overviewDialog: false,
 
+      periodOptions: [
+        { label: 'Anual', value: '360' },
+        { label: 'Semestral', value: '180' },
+        { label: 'Cuatrimestral', value: '120' },
+        { label: 'Trimestral', value: '90' },
+        { label: 'Bimestral', value: '60' },
+        { label: 'Mensual', value: '30' },
+        { label: 'Quincenal', value: '15' }
+      ],
+
 
       differenceMs: 0,
       differenceDays: 0,
@@ -200,6 +210,7 @@ export default {
             <p v-if="bank.te !== 0">TE: {{ bank.te }} %</p>
             <p>Periodo: {{bank.m}} dias</p>
             <p v-if="bank.tn !== 0">Capitalizacion: {{bank.n}} dias</p>
+            <p>Otros costos: {{ bank.costs }}</p>
             <pv-button label="Dar factura" @click="giveBillRequest(bank)"/>
 
             <pv-button label="Editar" severity="secondary" @click="openEditDialog(bank)"/>
@@ -227,15 +238,60 @@ export default {
     </pv-dialog>
   </pv-dialog>
 
-  <pv-dialog header="Edit Bank Details" v-model:visible="dialogVisible">
-    <pv-float-label>
-      <label for="tna">Bank TNA</label>
-      <pv-input-number id="tna" v-model="selectedBank.tn" />
-    </pv-float-label>
-    <pv-float-label>
-      <label for="tea">Bank TEA</label>
-      <pv-input-number id="tea" v-model="selectedBank.te" />
-    </pv-float-label>
+  <pv-dialog header="Editar detalles del banco" v-model:visible="dialogVisible">
+    <div v-if="selectedBank.tn !== 0">
+    <div class="field mt-5">
+      <pv-float-label>
+        <label for="tna">TN del banco</label>
+        <pv-input-number id="tna" v-model="selectedBank.tn" />
+      </pv-float-label>
+    </div>
+
+      <div class="field mt-5">
+        <pv-select
+            v-model="selectedBank.m"
+            :options="periodOptions"
+            option-label="label"
+            option-value="value"
+            placeholder="Seleccionar periodo"
+        />
+      </div>
+
+      <div class="field mt-5">
+        <pv-select
+            v-model="selectedBank.n"
+            :options="periodOptions"
+            option-label="label"
+            option-value="value"
+            placeholder="Seleccionar capitalizacion"
+        />
+      </div>
+    </div>
+    <div v-else>
+    <div class="field mt-5">
+      <pv-float-label>
+        <label for="tea">TE del banco</label>
+        <pv-input-number id="tea" v-model="selectedBank.te" />
+      </pv-float-label>
+    </div>
+
+    <div class="field mt-5">
+      <pv-select
+          v-model="selectedBank.m"
+          :options="periodOptions"
+          option-label="label"
+          option-value="value"
+          placeholder="Seleccionar periodo"
+      />
+    </div>
+    </div>
+
+    <div class="field mt-5">
+      <pv-float-label>
+        <label for="costs">Otros costos</label>
+        <pv-input-number id="costs" v-model="selectedBank.costs"/>
+      </pv-float-label>
+    </div>
     <pv-button label="Save" @click="saveChanges" />
   </pv-dialog>
 
