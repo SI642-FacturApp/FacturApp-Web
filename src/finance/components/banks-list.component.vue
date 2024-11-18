@@ -2,12 +2,14 @@
 import { FinanceService } from "../services/finance.service.js";
 import { BillsService } from "../../bills/services/bills.service.js";
 import { Button as PvButton, DatePicker as PvInputDate, Dialog as PvDialog, Select as PvSelect } from "primevue";
+import {useAccountStore} from "../../stores/account.store.js";
 
 export default {
   name: "banks-list",
   components: { PvInputDate, PvSelect, PvDialog, PvButton },
   data() {
     return {
+      accountStore: useAccountStore(),
       banks: [],
       financeService: new FinanceService(),
       billService: new BillsService(),
@@ -49,7 +51,8 @@ export default {
     async fetchBills() {
       try {
         const response = await this.billService.getAll(); // Assuming getAllBills method exists
-        this.bills = response.data;
+        const userId = this.accountStore.userId;
+        this.bills = response.data.filter(bill => bill.userId === userId);
       } catch (error) {
         console.error('Error fetching bills:', error);
       }
