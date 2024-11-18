@@ -1,48 +1,5 @@
 {
-  "bills": [
-    {
-      "id": 1,
-      "userId": 3,
-      "name": "Test1",
-      "ruc": 18670150181,
-      "type": "Factura",
-      "num": "f001-182gt1",
-      "emission_date": "2024-11-11T05:00:00.000Z",
-      "expiration_date": "2024-11-13T05:00:00.000Z",
-      "status": "Validado",
-      "amount": "10958",
-      "tcea": 0,
-      "currency": "PEN"
-    },
-    {
-      "id": 2,
-      "userId": 3,
-      "name": "Test2",
-      "ruc": 43576876653,
-      "type": "Factory",
-      "num": "f01jf-1u91t4",
-      "emission_date": "2024-11-17T05:00:00.000Z",
-      "expiration_date": "2024-11-18T05:00:00.000Z",
-      "status": "Validado",
-      "amount": "13743",
-      "tcea": 0,
-      "currency": "PEN"
-    },
-    {
-      "id": 3,
-      "userId": 4,
-      "name": "grewjhj",
-      "ruc": 32178605612,
-      "type": "Test",
-      "num": "326126-g2gthn92",
-      "emission_date": "2024-11-11T05:00:00.000Z",
-      "expiration_date": "2024-11-19T05:00:00.000Z",
-      "status": "Validado",
-      "amount": "1650",
-      "tcea": 0,
-      "currency": "PEN"
-    }
-  ],
+  "bills": [],
   "banks": [
     {
       "id": 1,
@@ -59,27 +16,5 @@
       "image": "https://s3.amazonaws.com/media.greatplacetowork.com/peru/best-workplaces-for-diversity-and-inclusion-in-peru/2021/interbank/logo.jpg"
     }
   ],
-  "users": [
-    {
-      "username": "Sebastian",
-      "phone": "954579940",
-      "email": "sebaspacheco2003@gmail.com",
-      "password": "12345678",
-      "id": 2
-    },
-    {
-      "username": "Pache",
-      "phone": "914091759",
-      "email": "pachieeee@proton.me",
-      "password": "Upc123456$",
-      "id": 3
-    },
-    {
-      "username": "veronica",
-      "phone": "999888777",
-      "email": "avac@gmail.com",
-      "password": "123456",
-      "id": 4
-    }
-  ]
+  "users": []
 }
