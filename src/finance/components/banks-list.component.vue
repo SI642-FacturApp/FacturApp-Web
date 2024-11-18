@@ -2,12 +2,14 @@
 import { FinanceService } from "../services/finance.service.js";
 import { BillsService } from "../../bills/services/bills.service.js";
 import { Button as PvButton, DatePicker as PvInputDate, Dialog as PvDialog, Select as PvSelect } from "primevue";
+import {useAccountStore} from "../../stores/account.store.js";
 
 export default {
   name: "banks-list",
   components: { PvInputDate, PvSelect, PvDialog, PvButton },
   data() {
     return {
+      accountStore: useAccountStore(),
       banks: [],
       financeService: new FinanceService(),
       billService: new BillsService(),
@@ -49,7 +51,8 @@ export default {
     async fetchBills() {
       try {
         const response = await this.billService.getAll(); // Assuming getAllBills method exists
-        this.bills = response.data;
+        const userId = this.accountStore.userId;
+        this.bills = response.data.filter(bill => bill.userId === userId);
       } catch (error) {
         console.error('Error fetching bills:', error);
       }
@@ -183,6 +186,7 @@ export default {
 </script>
 
 <template>
+  <div class="banks">
   <div class="banks-list">
     <div v-for="bank in banks" :key="bank.id" class="bank-card">
       <pv-card>
@@ -204,6 +208,7 @@ export default {
         </template>
       </pv-card>
     </div>
+  </div>
   </div>
 
   <pv-dialog header="Seleccionar factura" v-model:visible="billsDialog">
@@ -242,10 +247,17 @@ export default {
 </template>
 
 <style scoped>
+
+.banks-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 .bank-card {
   width: 400px; /* Adjust the width as needed */
   height: 300px; /* Adjust the height as needed */
   margin-bottom: 20px; /* Add some space between cards */
+  padding: 1rem;
 }
 
 .bank-image {
