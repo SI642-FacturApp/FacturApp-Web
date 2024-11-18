@@ -21,15 +21,18 @@ export default {
       //First, get an array of all bill names
       const billNames = this.bills.map(bill => bill.name);
       console.log(billNames)
-      //Second, get an array of all tcea values
-      const tceaValues = this.bills.map(bill => bill.tcea);
-      console.log(tceaValues)
+      //Second, get the sum of all amount values
+      const totalAmount = this.bills.reduce((sum, bill) => sum + parseFloat(bill.amount), 0);
+
+      // Finally, calculate the percentage of each bill amount
+      const calculatedValues = this.bills.map(bill => (parseFloat(bill.amount) / totalAmount) * bill.tcea);
+      console.log(calculatedValues)
 
       return {
         labels: billNames,
         datasets: [
           {
-            data: tceaValues
+            data: calculatedValues
           }
         ]
       }
