@@ -5,10 +5,11 @@ import DataManager from "../../shared/components/data-manager.component.vue";
 import BillCreateAndEdit from "../components/bill-create-and-edit.component.vue";
 import { SelectButton as PvSelectButton } from "primevue";
 import { useAccountStore } from "../../stores/account.store.js";
+import BillsChart from "../components/bills-chart.component.vue";
 
 export default {
   name: "bills-management",
-  components: { PvSelectButton, BillCreateAndEdit, DataManager },
+  components: {BillsChart, PvSelectButton, BillCreateAndEdit, DataManager },
 
   data() {
     return {
@@ -91,12 +92,10 @@ export default {
     },
     // Service client methods
     createBill() {
-      const newId = this.generateNewId();
-      this.bill.id = newId;
       this.bill.status = 'Validado';
-      this.bill.userId = accountStore.userId;
+      this.bill.userId = this.accountStore.userId;
       this.billService.create(this.bill).then(response => {
-        let bill = new Bill( {...response.data, userId: accountStore.userId} );
+        let bill = new Bill( {...response.data, userId: this.accountStore.userId} );
         this.bills.push(bill);
         this.notifySuccessfulAction('Bill created successfully');
       }).catch(error => {
@@ -181,7 +180,6 @@ export default {
         @delete-item-requested="onDeleteBill"
         @delete-selected-items-requested="onDeleteSelectedBills">
       <template #custom-columns>
-        <pv-column :sortable="true" field="id" header="Id" style="min-width: 10rem" class="bg-gray-100"/>
         <pv-column :sortable="true" field="name" header="Nombre" style="min-width: 10rem"/>
         <pv-column :sortable="true" field="ruc" header="RUC" style="min-width: 10rem"/>
         <pv-column :sortable="true" field="type" header="Tipo" style="min-width: 10rem"/>
@@ -201,6 +199,7 @@ export default {
         @cancel-requested="onCancelRequested"
         @save-requested="onSaveRequested">
     </bill-create-and-edit>
+    <bills-chart :bills="filteredBills"/>
   </div>
 </template>
 
