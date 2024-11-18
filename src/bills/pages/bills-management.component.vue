@@ -6,6 +6,7 @@ import BillCreateAndEdit from "../components/bill-create-and-edit.component.vue"
 import { SelectButton as PvSelectButton } from "primevue";
 import { useAccountStore } from "../../stores/account.store.js";
 import BillsChart from "../components/bills-chart.component.vue";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   name: "bills-management",
@@ -92,6 +93,7 @@ export default {
     },
     // Service client methods
     createBill() {
+      this.bill.id = uuidv4()
       this.bill.status = 'Validado';
       this.bill.userId = this.accountStore.userId;
       this.billService.create(this.bill).then(response => {
