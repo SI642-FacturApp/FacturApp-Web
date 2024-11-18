@@ -249,7 +249,7 @@ export default {
 }
 
 .bank-image {
-  width: 100%;
+  width: 50%;
   height: auto;
 }
 

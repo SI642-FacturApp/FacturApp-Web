@@ -33,7 +33,7 @@ export default {
         const response = await this.billService.getByNum(num);
         return response.data.length === 0;
       } catch (error) {
-        console.error('Error checking bill number uniqueness:', error);
+        console.error('Error checking bill number uniqueness.');
         return false;
       }
     }
