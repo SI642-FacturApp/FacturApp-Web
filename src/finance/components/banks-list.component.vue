@@ -183,6 +183,7 @@ export default {
 </script>
 
 <template>
+  <div class="banks">
   <div class="banks-list">
     <div v-for="bank in banks" :key="bank.id" class="bank-card">
       <pv-card>
@@ -204,6 +205,7 @@ export default {
         </template>
       </pv-card>
     </div>
+  </div>
   </div>
 
   <pv-dialog header="Seleccionar factura" v-model:visible="billsDialog">
@@ -242,10 +244,17 @@ export default {
 </template>
 
 <style scoped>
+
+.banks-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 .bank-card {
   width: 400px; /* Adjust the width as needed */
   height: 300px; /* Adjust the height as needed */
   margin-bottom: 20px; /* Add some space between cards */
+  padding: 1rem;
 }
 
 .bank-image {
