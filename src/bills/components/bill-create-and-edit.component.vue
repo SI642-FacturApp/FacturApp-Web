@@ -28,6 +28,11 @@ export default {
         console.error('Bill number must be unique');
       }
     },
+    validateRuc() {
+      if (this.bill.ruc && this.bill.ruc.toString().length > 11) {
+        this.bill.ruc = parseInt(this.bill.ruc.toString().slice(0, 11));
+      }
+    },
     async isNumUnique(num) {
       try {
         const response = await this.billService.getByNum(num);
@@ -60,11 +65,17 @@ export default {
         </div>
 
         <div class="field mt-5">
-        <pv-float-label>
-          <label for="ruc">RUC</label>
-          <pv-input-number id="ruc" v-model="bill.ruc"
-                           :class="{'p-invalid': submitted && !bill.ruc }"/>
-        </pv-float-label>
+          <pv-float-label>
+            <label for="ruc">RUC</label>
+            <pv-input-number
+                id="ruc"
+                v-model="bill.ruc"
+                :min="10000000000"
+                :max="99999999999"
+                @input="validateRuc"
+                :class="{'p-invalid': submitted && !bill.ruc }"
+            />
+          </pv-float-label>
         </div>
 
         <div class="field mt-5">
